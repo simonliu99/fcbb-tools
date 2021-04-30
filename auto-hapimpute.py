@@ -2,7 +2,7 @@
 
 Author: Simon Liu
 Date created: April 25, 2021
-Date last modified: April 29, 2021
+Date last modified: April 30, 2021
 Python Version: 3.8.2
 
 This script allows the user submit all files in a directory to the
@@ -96,7 +96,7 @@ def check(jobids, dest, driver):
     # check each file id
     while len(jobids) > len(complete):
         print('sleeping for 5 minutes')
-        for i in tqdm(range(300)): time.sleep(1)
+        # for i in tqdm(range(300)): time.sleep(1)
         for id in jobids:
             if id in complete: continue
             driver.get('http://hapimpute.opencravat.org/')
@@ -108,20 +108,20 @@ def check(jobids, dest, driver):
             time.sleep(0.25)
             download = driver.find_element_by_id('outlink');
             if download.is_displayed():
-                sys.stderr.write('\rDownloaded %d of %d - %s' % (len(complete) + 1, len(jobids), id))
                 link = download.get_attribute('href') # get link
                 fn = '%s-imputed' % jobids[id]
                 with open(os.path.join(dest, fn), 'wb') as f:
                     f.write(requests.get(link).content)
                 complete.append(id)
+                sys.stderr.write('\rDownloaded %d of %d - %s' % (len(complete) + 1, len(jobids), id))
             elif driver.find_element_by_id('status').text == 'ERROR':
                 complete.append(id)
-                error.append(jobsid[id])
-                print('ERROR on file %s' % jobids[id])
+                error.append(jobids[id])
+                # print('ERROR on file %s' % jobids[id])
             else:
                 break
             time.sleep(0.25)
-    print('Downloaded %d of %d - %s' % (len(complete) + 1, len(jobids), id))
+    print('Downloaded %d of %d - %s' % (len(complete), len(jobids), id))
     if error: print('ERRORS in', error)
 
 if __name__ == '__main__':
@@ -134,9 +134,9 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
 
     # define required arguments
-    input_dir = args['i'][0]
-    output_dir = args['o'][0]
-    chromedriver_path = args['c'][0] if args['c'] else os.getcwd()
+    input_dir = os.path.abspath(args['i'][0])
+    output_dir = os.path.abspath(args['o'][0])
+    chromedriver_path = os.path.abspath(args['c'][0]) if args['c'] else os.getcwd()
 
     driver = Chrome(chromedriver_path)
     driver.get('http://hapimpute.opencravat.org/')
