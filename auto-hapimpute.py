@@ -110,7 +110,8 @@ def check(jobids, dest, driver):
             if download.is_displayed():
                 sys.stderr.write('\rDownloaded %d of %d - %s' % (len(complete) + 1, len(jobids), id))
                 link = download.get_attribute('href') # get link
-                with open(os.path.join(dest, jobids[id]), 'wb') as f:
+                fn = '%s-imputed' % jobids[id]
+                with open(os.path.join(dest, fn), 'wb') as f:
                     f.write(requests.get(link).content)
                 complete.append(id)
             elif driver.find_element_by_id('status').text == 'ERROR':
