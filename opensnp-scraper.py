@@ -6,7 +6,9 @@ Date last modified: April 29, 2021
 Python Version: 3.8.2
 
 This script allows the user to grab all 23andme genomes for a given
-phenotype. It is assumed that the given phenotype is valid.
+phenotype. It is assumed that the given phenotype is valid. The script
+also performs a simple validation check and moves files that fail to
+a separate directory. 
 
 This tool saves phenotypes into a folder structure separated by
 variant name as shown below:
