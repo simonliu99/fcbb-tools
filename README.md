@@ -40,6 +40,6 @@ which can be minimized for the duration of the run.
 This script requires that `tqdm` and `selenium` be installed within the
 Python environment you are running this script in. The chromedriver
 executable is also needed, which can be downloaded from
-https://chromedriver.chromium.org/downloads. Please download the
+https://chromedriver.chromium.org/downloads. Download the
 version corresponding to the version of Chrome that is installed on
 your system.
